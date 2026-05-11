@@ -1,9 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import type { Project } from '@/lib/types'
+
+function toProject(doc: { id: string; data: () => Record<string, unknown> }): Project {
+  const d = doc.data()
+  return {
+    id: doc.id,
+    ...d,
+    createdAt: (d.createdAt as { toDate?: () => Date } | null)?.toDate?.() ?? new Date(),
+    updatedAt: (d.updatedAt as { toDate?: () => Date } | null)?.toDate?.() ?? new Date(),
+  } as Project
+}
 
 export function useProjects(category?: string) {
   const [projects, setProjects] = useState<Project[]>([])
@@ -11,26 +21,19 @@ export function useProjects(category?: string) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const constraints = [
-      where('published', '==', true),
-      orderBy('order', 'asc'),
-    ]
-    if (category && category !== 'all') {
-      constraints.unshift(where('category', '==', category))
-    }
-
-    const q = query(collection(db, 'projects'), ...constraints)
     const unsub = onSnapshot(
-      q,
+      collection(db, 'projects'),
       snap => {
-        setProjects(
-          snap.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            createdAt: doc.data().createdAt?.toDate?.() ?? new Date(),
-            updatedAt: doc.data().updatedAt?.toDate?.() ?? new Date(),
-          })) as Project[]
-        )
+        let list = snap.docs.map(toProject)
+
+        // Filter and sort client-side — no composite index needed
+        list = list.filter(p => p.published)
+        if (category && category !== 'all') {
+          list = list.filter(p => p.category === category)
+        }
+        list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
+        setProjects(list)
         setLoading(false)
       },
       err => {
@@ -49,23 +52,18 @@ export function useFeaturedProjects() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const q = query(
+    const unsub = onSnapshot(
       collection(db, 'projects'),
-      where('published', '==', true),
-      where('featured', '==', true),
-      orderBy('order', 'asc')
+      snap => {
+        const list = snap.docs
+          .map(toProject)
+          .filter(p => p.published && p.featured)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
+        setProjects(list)
+        setLoading(false)
+      }
     )
-    const unsub = onSnapshot(q, snap => {
-      setProjects(
-        snap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate?.() ?? new Date(),
-          updatedAt: doc.data().updatedAt?.toDate?.() ?? new Date(),
-        })) as Project[]
-      )
-      setLoading(false)
-    })
     return unsub
   }, [])
 
