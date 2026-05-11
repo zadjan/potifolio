@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${firaCode.variable}`}>
-      <body className="min-h-screen bg-[#050508] text-[#e0e0e0] grid-bg scanlines">
+      <body className="min-h-screen bg-[#050508] text-[#e0e0e0] grid-bg">
         <ParticleBackground />
         <CustomCursor />
         <Navbar />

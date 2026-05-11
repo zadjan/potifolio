@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { TerminalText } from './TerminalText'
@@ -17,62 +18,121 @@ export function HeroSection() {
         }}
       />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 w-full">
         <TiltCard>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="border border-[#1e1e2e] bg-[#050508]/80 backdrop-blur-sm p-10 md:p-16 rounded-sm glow-box-green"
+            className="border border-[#1e1e2e] bg-[#050508]/80 backdrop-blur-sm p-10 md:p-14 rounded-sm glow-box-green"
           >
-            <TerminalText />
+            <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.6, duration: 0.7 }}
-              className="text-5xl md:text-7xl font-display font-black tracking-tight mb-4"
-            >
-              <span className="text-white">FRONTEND</span>
-              <br />
-              <span
-                className="text-[#00FF94] animate-flicker glow-green"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                DEVELOPER
-              </span>
-            </motion.h1>
+              {/* ── Left: text content ── */}
+              <div className="flex-1 text-center md:text-left order-2 md:order-1">
+                <TerminalText />
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.2, duration: 0.6 }}
-              className="font-mono text-sm text-[#666] mb-10 max-w-md mx-auto"
-            >
-              Building interfaces that feel alive.
-              <br />
-              React · Next.js · TypeScript · UI/UX
-            </motion.p>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.6, duration: 0.7 }}
+                  className="text-5xl md:text-6xl font-display font-black tracking-tight mb-4"
+                >
+                  <span className="text-white">FRONTEND</span>
+                  <br />
+                  <span
+                    className="text-[#00FF94] animate-flicker glow-green"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    DEVELOPER
+                  </span>
+                </motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.5, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <Link
-                href="/projects"
-                className="neon-btn px-8 py-4 text-sm font-mono tracking-widest border border-[#00FF94] text-[#00FF94] inline-block hover:text-[#050508] hover:shadow-[0_0_20px_rgba(0,255,148,0.5)] transition-all duration-300"
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.2, duration: 0.6 }}
+                  className="font-mono text-sm text-[#666] mb-10 max-w-md mx-auto md:mx-0"
+                >
+                  Building interfaces that feel alive.
+                  <br />
+                  React · Next.js · TypeScript · UI/UX
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.5, duration: 0.5 }}
+                  className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+                >
+                  <Link
+                    href="/projects"
+                    className="neon-btn px-8 py-4 text-sm font-mono tracking-widest border border-[#00FF94] text-[#00FF94] inline-block hover:text-[#050508] hover:shadow-[0_0_20px_rgba(0,255,148,0.5)] transition-all duration-300"
+                  >
+                    [ View My Work ]
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="neon-btn px-8 py-4 text-sm font-mono tracking-widest border border-[#7B61FF] text-[#7B61FF] inline-block hover:text-[#050508] before:bg-[#7B61FF] hover:shadow-[0_0_20px_rgba(123,97,255,0.5)] transition-all duration-300"
+                  >
+                    [ Hire Me ]
+                  </Link>
+                </motion.div>
+              </div>
+
+              {/* ── Right: Avatar ── */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+                className="shrink-0 order-1 md:order-2"
               >
-                [ View My Work ]
-              </Link>
-              <Link
-                href="/contact"
-                className="neon-btn px-8 py-4 text-sm font-mono tracking-widest border border-[#7B61FF] text-[#7B61FF] inline-block hover:text-[#050508] before:bg-[#7B61FF] hover:shadow-[0_0_20px_rgba(123,97,255,0.5)] transition-all duration-300"
-              >
-                [ Hire Me ]
-              </Link>
-            </motion.div>
+                <div className="relative">
+                  {/* Soft glow behind — faqat border atrofida, rasmni yopmaydi */}
+                  <div
+                    className="absolute -inset-3 rounded-full blur-xl opacity-20"
+                    style={{ background: '#00FF94' }}
+                  />
+
+                  {/* Corner bracket decorations */}
+                  <div className="absolute -top-4 -left-4 w-6 h-6 border-t-2 border-l-2 border-[#00FF94]" />
+                  <div className="absolute -top-4 -right-4 w-6 h-6 border-t-2 border-r-2 border-[#00FF94]" />
+                  <div className="absolute -bottom-4 -left-4 w-6 h-6 border-b-2 border-l-2 border-[#00FF94]" />
+                  <div className="absolute -bottom-4 -right-4 w-6 h-6 border-b-2 border-r-2 border-[#00FF94]" />
+
+                  {/* Rotating outer ring */}
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+                    className="absolute -inset-2 rounded-full border border-dashed border-[#00FF9440]"
+                  />
+
+                  {/* Avatar circle — toza, shaffof */}
+                  <div
+                    className="relative w-48 h-48 md:w-60 md:h-60 rounded-full overflow-hidden border-2 border-[#00FF94]"
+                    style={{
+                      boxShadow:
+                        '0 0 20px rgba(0,255,148,0.45), 0 0 50px rgba(0,255,148,0.15)',
+                    }}
+                  >
+                    <Image
+                      src="/avatar.png"
+                      alt="Ozodbek"
+                      fill
+                      className="object-cover object-top"
+                      priority
+                    />
+                  </div>
+
+                  {/* Name badge */}
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-[#050508]/95 border border-[#00FF9440] px-3 py-1 whitespace-nowrap">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse-dot shrink-0" />
+                    <span className="font-mono text-[#00FF94] text-[9px] tracking-widest">IKROMOV OZODBEK</span>
+                  </div>
+                </div>
+              </motion.div>
+
+            </div>
           </motion.div>
         </TiltCard>
 
