@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #050508;
+  --color-foreground: #e0e0e0;
+
+  /* Neon accent colors */
+  --color-neon-green: #00FF94;
+  --color-neon-pink: #FF2D78;
+  --color-neon-purple: #7B61FF;
+  --color-neon-blue: #00D4FF;
+
+  /* Surface colors */
+  --color-surface: #0d0d14;
+  --color-surface-2: #13131e;
+  --color-border: #1e1e2e;
+}
+
+:root {
+  --bg: #050508;
+  --fg: #e0e0e0;
+  --neon-green: #00FF94;
+  --neon-pink: #FF2D78;
+  --neon-purple: #7B61FF;
+  --neon-blue: #00D4FF;
+  --surface: #0d0d14;
+  --surface-2: #13131e;
+  --border: #1e1e2e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom cursor only on pointer devices (not touch) */
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--neon-green);
+  border-radius: 2px;
+}
+
+/* Grid background texture */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 255, 148, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 148, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scanline effect */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Neon glow utilities */
+.glow-green {
+  text-shadow: 0 0 10px #00FF94, 0 0 30px #00FF9460, 0 0 60px #00FF9420;
+}
+.glow-pink {
+  text-shadow: 0 0 10px #FF2D78, 0 0 30px #FF2D7860, 0 0 60px #FF2D7820;
+}
+.glow-purple {
+  text-shadow: 0 0 10px #7B61FF, 0 0 30px #7B61FF60, 0 0 60px #7B61FF20;
+}
+
+.glow-box-green {
+  box-shadow: 0 0 20px #00FF9430, 0 0 60px #00FF9410;
+}
+.glow-box-pink {
+  box-shadow: 0 0 20px #FF2D7830, 0 0 60px #FF2D7810;
+}
+.glow-box-purple {
+  box-shadow: 0 0 20px #7B61FF30, 0 0 60px #7B61FF10;
+}
+
+/* Flicker animation */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+/* Blink cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 148, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(0, 255, 148, 0); }
+}
+
+/* Scroll indicator bounce */
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.animate-flicker { animation: flicker 4s infinite; }
+.animate-blink { animation: blink 1s infinite; }
+.animate-pulse-dot { animation: pulse-dot 2s infinite; }
+.animate-bounce-down { animation: bounce-down 1.5s infinite; }
+
+/* Neon border input */
+.neon-input {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+  font-family: 'Fira Code', monospace;
+}
+.neon-input:focus {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(0, 255, 148, 0.2);
+}
+
+/* Neon button */
+.neon-btn {
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s, box-shadow 0.3s;
+  font-family: 'Fira Code', monospace;
+  letter-spacing: 0.05em;
+}
+.neon-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--neon-green);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.neon-btn:hover {
+  color: #050508;
+  box-shadow: 0 0 20px rgba(0, 255, 148, 0.5);
+}
+.neon-btn:hover::before {
+  transform: translateX(0);
+}
+
+/* Custom cursor */
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
